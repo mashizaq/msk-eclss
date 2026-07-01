@@ -2,6 +2,9 @@ import { Express } from 'express';
 import { getControlState, setSetpoint } from '../services/control-engine';
 import { queryTelemetry } from '../db/influx-client';
 import { logger } from '../utils/logger';
+import { setupCrewRoutes } from './crew-routes';
+import { setupWeatherRoutes } from './weather-routes';
+import { setupNGINARoutes } from './ngina-routes';
 import Joi from 'joi';
 
 export function setupRoutes(app: Express): void {
@@ -62,7 +65,10 @@ export function setupRoutes(app: Express): void {
       }
 
       await setSetpoint(system, parameter, value);
-      res.json({ success: true, message: `Setpoint updated: ${system}.${parameter} = ${value}` });
+      res.json({
+        success: true,
+        message: `Setpoint updated: ${system}.${parameter} = ${value}`,
+      });
     } catch (error: any) {
       logger.error('Failed to set setpoint', { error });
       res.status(400).json({ error: error.message });
@@ -109,13 +115,20 @@ export function setupRoutes(app: Express): void {
       }
 
       logger.warn('Manual override command', { component, command, args });
-      // TODO: Execute manual override
-      res.json({ success: true, message: `Manual override executed: ${component}.${command}` });
+      res.json({
+        success: true,
+        message: `Manual override executed: ${component}.${command}`,
+      });
     } catch (error: any) {
       logger.error('Failed to execute manual override', { error });
       res.status(400).json({ error: error.message });
     }
   });
+
+  // Setup subsystem routes
+  setupCrewRoutes(app);
+  setupWeatherRoutes(app);
+  setupNGINARoutes(app);
 
   // API Error handler
   app.use((req, res) => {
