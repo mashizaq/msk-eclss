@@ -1,0 +1,19 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy workspace packages
+COPY package.json package-lock.json ./
+COPY src/backend src/backend
+
+# Install dependencies
+RUN npm ci --workspace=eclss-backend
+
+# Build backend
+RUN npm run build --workspace=eclss-backend
+
+# Expose port
+EXPOSE 5000
+
+# Start backend
+CMD ["npm", "run", "start", "--workspace=eclss-backend"]

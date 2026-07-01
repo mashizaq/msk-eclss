@@ -1,0 +1,27 @@
+{
+  "name": "eclss-cloud",
+  "version": "1.0.0",
+  "description": "ECLSS Cloud API and Mission Control Centre backend",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "deploy": "gcloud functions deploy eclss-api --runtime nodejs20 --trigger-http"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "firebase-admin": "^12.0.0",
+    "@prisma/client": "^5.4.1",
+    "jsonwebtoken": "^9.1.0",
+    "dotenv": "^16.3.1",
+    "pino": "^8.16.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "prisma": "^5.4.1",
+    "tsx": "^3.14.0"
+  }
+}

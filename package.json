@@ -1,0 +1,42 @@
+{
+  "name": "eclss-habitat-system",
+  "version": "1.0.0",
+  "description": "AI-driven Environmental Control and Life Support System for OASEAS habitat",
+  "main": "dist/backend/index.js",
+  "homepage": "https://github.com/mashizaq/msk-eclss",
+  "author": "Mars Society Kenya",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:backend dev:frontend dev:electron",
+    "dev:backend": "cd src/backend && npm run dev",
+    "dev:frontend": "cd src/frontend && npm run dev",
+    "dev:electron": "wait-on http://localhost:3000 && electron .",
+    "build": "npm-run-all build:backend build:frontend build:electron",
+    "build:backend": "cd src/backend && npm run build",
+    "build:frontend": "cd src/frontend && npm run build",
+    "build:electron": "cd src/electron && npm run build",
+    "test": "npm-run-all test:backend test:frontend",
+    "test:backend": "cd src/backend && npm test",
+    "test:frontend": "cd src/frontend && npm test",
+    "lint": "npm-run-all lint:backend lint:frontend",
+    "lint:backend": "cd src/backend && npm run lint",
+    "lint:frontend": "cd src/frontend && npm run lint",
+    "deploy:cloud": "cd cloud && npm run deploy",
+    "docker:build": "docker build -f Dockerfile.dev -t eclss:dev .",
+    "docker:run": "docker-compose -f docker-compose.habitat.yml up"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "npm-run-all": "^4.1.5",
+    "wait-on": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "workspaces": [
+    "src/backend",
+    "src/frontend",
+    "src/electron",
+    "cloud"
+  ]
+}
